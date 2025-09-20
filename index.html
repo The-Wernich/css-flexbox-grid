@@ -8,9 +8,14 @@
 </head>
 <body>
 <!-- ===== Navigation Bar ===== -->
-    <nav id="navbar">
-        <header>CSS Flexbox & Grid Documentation</header>
-        <ul>
+    
+        <header class="site-header">
+        <span class="site-title">CSS Flexbox & Grid Documentation</span>
+        <button id="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+        </header>
+        <button id="desktop-nav-toggle" aria-label="Collapse navigation">&#10094;</button>
+        <nav id="navbar">
+        <ul id="nav-links">
             <li><a class="nav-link" href="#Introduction">Introduction</a></li>
             <li><a class="nav-link" href="#What_You'll_Learn">What You'll Learn</a></li>
             <li><a class="nav-link" href="#Flexbox_vs_Grid">Flexbox vs Grid</a></li>
@@ -407,5 +412,60 @@
   <!-- ===== End Of References ===== -->
   <footer>Made By Valentino Wernich.</footer>
     </main>
+
+<script>
+  // --- Element Selectors ---
+  const navToggle = document.getElementById('nav-toggle');
+  const navbar = document.getElementById('navbar');
+  const mainDoc = document.getElementById('main-doc');
+  const desktopNavToggle = document.getElementById('desktop-nav-toggle');
+
+  // --- Mobile Nav Toggle ---
+  navToggle.addEventListener('click', () => {
+    navbar.classList.toggle('active');
+  });
+
+  // --- Desktop Nav Collapse Toggle ---
+  desktopNavToggle.addEventListener('click', () => {
+    navbar.classList.toggle('collapsed');
+    mainDoc.classList.toggle('collapsed');
+    desktopNavToggle.classList.toggle('collapsed');
+    // Flip chevron direction
+    desktopNavToggle.innerHTML = navbar.classList.contains('collapsed') ? '&#10095;' : '&#10094;';
+  });
+
+  // --- Collapse Mobile Nav on Main Content Interaction ---
+  function closeNavOnInteraction() {
+    if (window.innerWidth <= 600 && navbar.classList.contains('active')) {
+      navbar.classList.remove('active');
+    }
+  }
+  mainDoc.addEventListener('scroll', closeNavOnInteraction);
+  mainDoc.addEventListener('touchstart', closeNavOnInteraction);
+  mainDoc.addEventListener('click', closeNavOnInteraction);
+  window.addEventListener('scroll', closeNavOnInteraction);
+
+  // --- Reset Desktop Nav State on Resize to Mobile ---
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 600) {
+      navbar.classList.remove('collapsed');
+      mainDoc.classList.remove('collapsed');
+      desktopNavToggle.classList.remove('collapsed');
+      desktopNavToggle.innerHTML = '&#10094;';
+    }
+  });
+
+  // Collapse desktop nav when a nav link is clicked (desktop/tablet only)
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth > 600 && navbar.classList.contains('collapsed') === false) {
+      navbar.classList.add('collapsed');
+      mainDoc.classList.add('collapsed');
+      desktopNavToggle.classList.add('collapsed');
+      desktopNavToggle.innerHTML = '&#10095;';
+    }
+  });
+});
+</script>
 </body>
 </html>
