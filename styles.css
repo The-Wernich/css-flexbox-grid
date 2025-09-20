@@ -26,14 +26,56 @@ body::before {
     pointer-events: none;
 }
 
+/* Desktop nav collapse button */
+#desktop-nav-toggle {
+  display: none;
+  position: fixed;
+  top: 22vh;
+  left: 300px;
+  z-index: 150;
+  background: #4dabf7;
+  color: #fff;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  width: 32px;
+  height: 48px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: left 0.3s;
+}
+
+/* Collapsed nav styles */
+#navbar.collapsed {
+  width: 60px;
+  min-width: 60px;
+  overflow-x: hidden;
+  padding: 20px 5px;
+  transition: width 0.3s;
+}
+#navbar.collapsed ul,
+#navbar.collapsed .nav-link {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#navbar.collapsed header {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+#main-doc.collapsed {
+  margin-left: 80px; /* Adjust for collapsed nav */
+  transition: margin-left 0.3s;
+}
+
+/* Move collapse button when nav is collapsed */
+#desktop-nav-toggle.collapsed {
+  left: 60px;
+  transition: left 0.3s;
+}
+
 /* Navigation Bar Styles */
 #navbar {
-    width: 300px;
-    height: 60vh;
-    position: fixed;
-    left: 0.5vw;
-    top: 20vh;
-    overflow-y: auto;
     border-right: 2px solid #4dabf7;
     background: #f8f9fa;
     padding: 20px;
@@ -71,6 +113,35 @@ header {
     text-align: center;
 }
 
+/* Header styles for menu button and title */
+.site-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border-bottom: 2px solid #4dabf7;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
+.site-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#nav-toggle {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #4dabf7;
+  margin-left: 0;
+}
+
 /* Main Content Styles */
 #main-doc {
     margin-left: 320px; /* navbar width + some gap */
@@ -78,10 +149,6 @@ header {
     max-width: 800px;
     flex: 1;
 }
-
-/* Rest of your existing CSS remains the same */
-
-
 
 /* styling for code snipets */
 pre {
@@ -164,7 +231,6 @@ h4 {
     border-radius: 4px;
     min-height: 40px;
 }
-
 
 /* styles for border of flex-container demo */
 .container-flex-container {
@@ -353,82 +419,179 @@ footer {
   transition: 0.2s;
 }
 
+/* ===================== */
+/*     MEDIA QUERIES     */
+/* ===================== */
 
-/* Responsive Media Queries */
+/* Show only on desktop */
+@media (min-width: 601px) {
+  #navbar {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 20vh;
+    width: 300px;
+    height: 60vh;
+    border-right: 2px solid #4dabf7;
+    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 20px;
+    z-index: 100;
+    box-sizing: border-box;
+    transition: width 0.3s, padding 0.3s;
+  }
+  #navbar.collapsed {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+  }
+  #navbar.collapsed ul,
+  #navbar.collapsed .nav-link,
+  #navbar.collapsed header {
+    display: none !important;
+  }
+  #desktop-nav-toggle {
+    display: block;
+    position: fixed;
+    top: 22vh;
+    left: 300px;
+    z-index: 150;
+    transition: left 0.3s;
+  }
+  #desktop-nav-toggle.collapsed {
+    left: 0;
+  }
+  .site-header {
+    display: none;
+  }
+  #main-doc {
+    margin-left: 320px;
+    padding: 20px;
+    max-width: 800px;
+    flex: 1;
+    transition: margin-left 0.3s;
+  }
+  #main-doc.collapsed {
+    margin-left: 20px;
+  }
+}
+
 @media (max-width: 600px) {
-    
-.container-flex-items {
-    overflow: hidden; /* Contain overflowing items */
-    min-height: 200px; /* Adjusted height for mobile */
-    padding: 0.8rem; /* Slightly reduce padding */
-}
-    
-.demo-grow {
-      height: 50px; /* Reduce tall item height */
-      margin-bottom: 0; /* Remove extra space */
-      flex-shrink: 1; /* Allow shrinking if needed */
-    }
-    
-    .demo-flex-item {
-      min-width: 0; /* Allow items to shrink below 80px */
-      padding: 0.8rem; /* Slightly reduce padding */
-    }
+  /* Prevent horizontal scroll and set scroll padding for anchor links */
+  html, body {
+    overflow-x: hidden;
+    width: 100vw;
+  }
+
+  html {
+    scroll-padding-top: 75px; /* Adjust to match your .site-header/nav height */
+  }
+
+  body {
+    display: block;
+    min-width: 0;
+  }
+
+  /* Main content adjustments for mobile */
+  #main-doc {
+    margin-left: 0;
+    margin-top: 60px; /* Space for fixed header */
+    padding: 10px;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
+  /* Mobile nav bar styles */
+  #navbar {
+    display: none;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: auto;
+    border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
+    padding: 20px 0 20px 0;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+
+  #nav-toggle {
+    margin-left: 50px; /* or any value you prefer */
+  }
+
+  #navbar.active {
+    display: block;
+    transform: translateX(0);
+  }
+  #navbar.collapsed {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* Hide desktop nav toggle button on mobile */
+  #desktop-nav-toggle {
+    display: none !important;
+  }
+
+  /* Nav links column layout */
+  #nav-links {
+    flex-direction: column;
+  }
+
+  /* Header and site title font size for mobile */
+  #navbar header,
+  .site-title {
+    font-size: 1em;
+  }
+
+  /* Flexbox demo adjustments for mobile */
+  .container-flex-items {
+    overflow: hidden;
+    min-height: 200px;
+    padding: 0.8rem;
+  }
+  .demo-grow {
+    height: 50px;
+    margin-bottom: 0;
+    flex-shrink: 1;
+  }
+  .demo-flex-item {
+    min-width: 0;
+    padding: 0.8rem;
+  }
 }
 
-
-/* Mobile-first responsive navbar */
+/* Consistent Fieldset Sizing for Mobile/Tablet */
 @media (max-width: 768px) {
-    body {
-        flex-direction: column;
-    }
-
-@media (max-width: 768px) {
-        #navbar {
-        position: fixed; 
-        top: 0; 
-        width: 100%;
-        height: auto;
-        max-height: 200px;
-        overflow-y: auto;
-        border-right: none;
-        border-bottom: 2px solid #4dabf7; 
-        border-radius: 0 0 8px 8px; 
-        z-index: 1000; 
-    }
-    
-    #main-doc {
-        margin-top: 200px; 
-        margin-left: 0;
-        padding: 15px;
-    }
-}
-
-/* Consistent Fieldset Sizing for Mobile */
-@media (max-width: 768px) {
-    fieldset {
-        width: 100%;
-        min-width: 0; 
-        box-sizing: border-box; 
-        margin: 0 auto; 
-    }
-
-    /* Remove the <br> spacing between sections */
-    .main-section + .main-section {
-        margin-top: 20px;
-    }
-    
-    /* Adjust's legend/header sizing for mobile */
-    legend header {
-        font-size: 1.2em; 
-        white-space: normal; 
-    }
+  fieldset {
+    width: 100%;
+    min-width: 0; 
+    box-sizing: border-box; 
+    margin: 0 auto; 
+  }
+  /* Remove the <br> spacing between sections */
+  .main-section + .main-section {
+    margin-top: 20px;
+  }
+  /* Adjust's legend/header sizing for mobile */
+  legend header {
+    font-size: 1.2em; 
+    white-space: normal; 
+  }
 }
 
 @media (max-width: 768px) {
-    fieldset legend {
-        font-size: 1em; /* Slightly smaller on mobile */
-        padding: 0.2em 0.4em; /* Tighter padding */
-        margin-left: 5px; /* Reduced margin */
-    }
-}
+  fieldset legend {
+    font-size: 1em; /* Slightly smaller on mobile */
+    padding: 0.2em 0.4em; /* Tighter padding */
+    margin-left: 5px; /* Reduced margin */
+  }
 }
